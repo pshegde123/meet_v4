@@ -1,8 +1,10 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, within, waitFor } from "@testing-library/react";
+import { getEvents, extractLocations } from "../api.js";
 import EventList from "../components/EventList";
-import { getEvents } from "../api";
+import App from "../App";
 
+//Unit test
 describe("<EventList /> component", () => {
   let EventListComponent;
   beforeEach(() => {
@@ -18,19 +20,17 @@ describe("<EventList /> component", () => {
     );
     expect(EventListComponent.getAllByRole("listitem")).toHaveLength(4);
   });
+});
 
-  test("renders correct number of events", () => {
-    const EventListComponent = render(
-      <EventList events={[{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]} />
-    );
-    expect(EventListComponent.getAllByRole("listitem")).toHaveLength(4);
-  });
-
-  test("renders correct number of events", async () => {
-    const allEvents = await getEvents();
-    EventListComponent.rerender(<EventList events={allEvents} />);
-    expect(EventListComponent.getAllByRole("listitem")).toHaveLength(
-      allEvents.length
-    );
+//Integration test
+describe("<EventList /> integration", () => {
+  test("renders a list of 32 events when the app is mounted and rendered", async () => {
+    const AppComponent = render(<App />);
+    const AppDOM = AppComponent.container.firstChild;
+    const EventListDOM = AppDOM.querySelector("#event-list");
+    await waitFor(() => {
+      const EventListItems = within(EventListDOM).queryAllByRole("listitem");
+      expect(EventListItems.length).toBe(32);
+    });
   });
 });

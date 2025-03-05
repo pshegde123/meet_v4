@@ -19,5 +19,78 @@ export const extractLocations = (events) => {
  * This function will fetch the list of all events
  */
 export const getEvents = async () => {
-  return mockData;
+  if (window.location.href.startsWith("http://localhost")) {
+    return mockData;
+  }
+
+  const token = await getAccessToken();
+
+  if (token) {
+    removeQuery();
+    const url =
+      "https://y1ot5m1rod.execute-api.us-east-1.amazonaws.com/dev/api/get-events" +
+      "/" +
+      token;
+    const response = await fetch(url);
+    const result = await response.json();
+    if (result) {
+      return result.events;
+    } else return null;
+  }
+};
+
+const checkToken = async (accessToken) => {
+  const response = await fetch(
+    `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
+  );
+  const result = await response.json();
+  return result;
+};
+
+const removeQuery = () => {
+  let newurl;
+  if (window.history.pushState && window.location.pathname) {
+    newurl =
+      window.location.protocol +
+      "//" +
+      window.location.host +
+      window.location.pathname;
+    window.history.pushState("", "", newurl);
+  } else {
+    newurl = window.location.protocol + "//" + window.location.host;
+    window.history.pushState("", "", newurl);
+  }
+};
+
+export const getAccessToken = async () => {
+  const accessToken = localStorage.getItem("access_token");
+  const tokenCheck = accessToken && (await checkToken(accessToken));
+
+  if (!accessToken || tokenCheck.error) {
+    await localStorage.removeItem("access_token");
+    const searchParams = new URLSearchParams(window.location.search);
+    const code = await searchParams.get("code");
+    if (!code) {
+      const response = await fetch(
+        "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.events.public.readonly&response_type=code&client_id=403809773437-i7su0skabcu26ns8ummq214ic59acqqh.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fmeet-v4.vercel.app"
+      );
+      const result = await response.json();
+      const { authUrl } = result;
+      return (window.location.href = authUrl);
+    }
+    return code && getToken(code);
+  }
+  return accessToken;
+};
+const getToken = async (code) => {
+  const encodeCode = encodeURIComponent(code);
+  const response = await fetch(
+    "https://y1ot5m1rod.execute-api.us-east-1.amazonaws.com/dev/api/token" +
+      "/" +
+      encodeCode
+  );
+  const { access_token } = await response.json();
+  access_token && localStorage.setItem("access_token", access_token);
+
+  return access_token;
 };

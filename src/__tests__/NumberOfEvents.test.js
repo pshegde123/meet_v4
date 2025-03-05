@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import NumberOfEvents from "../components/NumberOfEvents.jsx";
+import { extractLocations, getEvents } from "../api.js";
 
 describe("<NumberOfEvents /> component", () => {
   let NumberOfEventsComponent;
