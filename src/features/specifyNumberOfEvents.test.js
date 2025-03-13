@@ -46,13 +46,10 @@ defineFeature(feature, (test) => {
 
     when("the user specifies a number of events to display", async () => {
       const numberOfEventsInput = screen.getByTestId("number-of-events-input");
-      await userEvent.type(numberOfEventsInput, "3");
+      fireEvent.change(numberOfEventsInput, { target: { value: "10" } });
     });
 
     then("that number of events should be displayed", async () => {
-      const inputElement = screen.getByTestId("number-of-events-input");
-      fireEvent.change(inputElement, { target: { value: "10" } });
-
       await waitFor(() => {
         const eventItems = screen.getAllByRole("listitem");
         expect(eventItems.length).toBe(parseInt("10"));

@@ -4,7 +4,7 @@ import CitySearch from './components/CitySearch';
 import EventList from './components/EventList';
 import NumberOfEvents from './components/NumberOfEvents';
 import { getEvents,extractLocations } from './api';
-import { InfoAlert } from './components/Alert';
+import { InfoAlert,ErrorAlert } from './components/Alert';
 import './App.css';
 
 const App = () => {
@@ -29,7 +29,10 @@ const App = () => {
   return (
     <div className="App">
       <div className="alerts-container">
-       {infoAlert.length ? <InfoAlert text={infoAlert}/> : null}
+       {infoAlert.length ? <InfoAlert text={infoAlert}/> : null}      
+     </div>
+     <div className="alerts-container">
+        {errorAlert.length ? <ErrorAlert text={errorAlert}/> : null}
      </div>
       <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} setInfoAlert={setInfoAlert}/>
       <NumberOfEvents numberOfEvents={currentNOE} setNumberOfEvents={setCurrentNOE} setErrorAlert={setErrorAlert}/>

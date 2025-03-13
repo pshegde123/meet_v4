@@ -8,10 +8,11 @@ const NumberOfEvents = ({ numberOfEvents, setNumberOfEvents, setErrorAlert }) =>
     const handleInputChanged = (event) => {
         const value = parseInt(event.target.value, 10);
        
-        if (value < 1 || value > 32) {
-            setError('Select number from 1 to 32');
+
+        if (isNaN(value) || (value < 1 || value > 32)) {                  
+            setError('Select number from 1 to 32');    
             setErrorAlert('Select number from 1 to 32');
-        } else {
+        } else {                       
             setError('');
             setErrorAlert('');
             setNumber(value);
@@ -31,8 +32,7 @@ const NumberOfEvents = ({ numberOfEvents, setNumberOfEvents, setErrorAlert }) =>
             data-testid="number-of-events-input"            
             placeholder="Enter a number"            
             onChange={handleInputChanged}           
-        />  
-        {error && <div className="error-alert">{error}</div>}     
+        />          
   </div>  )
 }
 

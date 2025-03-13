@@ -61,8 +61,6 @@ describe("<NumberOfEvents /> component", () => {
     );
     const inputElement = screen.getByTestId("number-of-events-input");
     fireEvent.change(inputElement, { target: { value: "0" } });
-    expect(screen.getByText("Select number from 1 to 32")).toBeInTheDocument();
     expect(setErrorAlert).toHaveBeenCalledWith("Select number from 1 to 32");
-    //expect(setNumberOfEvents).not.toHaveBeenCalled();
   });
 });
