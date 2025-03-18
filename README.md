@@ -1,5 +1,26 @@
 # Meet App
 ![Meet App Page](./meet-app-page.png)
+
+Meet App is a serverless, progressive web application (PWA) with React using a
+test-driven development (TDD) technique that allows users to fetch upcoming events using Google Calendar API and filter events by the city. 
+
+## Key Features
+* Uses Google OAuth for authentication.
+* Filter Events by City.
+* Show/Hide Event Details.
+* Number of events selector.
+* Retrieves cached events when offline
+* Provides information, warnings, and error messages
+* Display Charts Visualizing Event Details
+
+## Technologies Used
+* Vite 
+* Workbox
+* Google OAuth 
+* React
+* Recharts
+* Jest
+
 ## Features & Scenarios
 ### Feature 1: Filter Events By City
    **User Story :**  As a user,  
