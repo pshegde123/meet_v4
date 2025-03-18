@@ -1,4 +1,5 @@
 # Meet App
+![Meet App Page](./meet-app-page.png)
 ## Features & Scenarios
 ### Feature 1: Filter Events By City
    **User Story :**  As a user,  
